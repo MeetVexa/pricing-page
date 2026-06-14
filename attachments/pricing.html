@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing · Done-For-You Systems</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dark: #0a0a0a;
+    --mid: #444;
+    --muted: #888;
+    --faint: #bbb;
+    --bg: #f7f6f3;
+    --card: #ffffff;
+    --border: #e2e0db;
+    --blue: #2c7be5;
+    --blue-l: #e8f1fd;
+    --blue-d: #0d47a1;
+    --purple: #6c5ce7;
+    --purple-l: #ede9fc;
+    --purple-d: #3d2c9e;
+    --green-l: #e6f4e6;
+    --green-d: #1a5e1a;
+    --coral: #e84040;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 48px 20px 64px;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 40px; }
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 12px;
+  }
+  .headline {
+    font-family: 'Syne', sans-serif; font-size: clamp(30px, 5vw, 48px);
+    font-weight: 800; color: var(--dark); line-height: 1.1; margin-bottom: 14px;
+  }
+  .headline em { font-style: normal; color: var(--blue); }
+  .subhead {
+    font-size: 15px; color: var(--muted); max-width: 520px;
+    margin: 0 auto 28px; line-height: 1.6;
+  }
+
+  /* Toggle */
+  .toggle-outer { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 36px; }
+  .toggle-wrap {
+    display: flex; background: white; border: 1px solid var(--border);
+    border-radius: 12px; padding: 4px; gap: 4px;
+  }
+  .tog {
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 8px 22px; border-radius: 9px; border: none; cursor: pointer;
+    background: transparent; color: var(--muted); transition: all 0.18s;
+  }
+  .tog.active {
+    background: var(--dark); color: white;
+  }
+  .save-tag {
+    font-size: 11px; font-weight: 600; background: var(--green-l);
+    color: var(--green-d); padding: 4px 10px; border-radius: 20px;
+    display: none;
+  }
+  .save-tag.show { display: inline-block; }
+
+  /* Spots bar */
+  .spots {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: white; border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 18px; max-width: 520px; margin: 0 auto 40px; font-size: 13px; color: var(--muted);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); flex-shrink: 0; }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .card.pop { border: 2px solid var(--blue); }
+  .card.vip { border: 1px solid var(--border); }
+
+  .card-badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 9px 16px; text-align: center;
+  }
+  .badge-gray { background: #f0efeb; color: #555; }
+  .badge-blue { background: var(--blue); color: white; }
+  .badge-purple { background: var(--purple-l); color: var(--purple-d); }
+
+  .card-body { padding: 24px 22px; flex: 1; display: flex; flex-direction: column; }
+
+  .tier-label { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .tier-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--dark); line-height: 1.25; margin-bottom: 20px; }
+
+  /* Pricing section */
+  .pricing-section { margin-bottom: 18px; }
+  .pricing-mode-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .price-old { font-size: 12px; color: var(--faint); text-decoration: line-through; min-height: 16px; }
+  .price-row { display: flex; align-items: baseline; gap: 4px; }
+  .price-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: var(--dark); line-height: 1; }
+  .price-per { font-size: 12px; color: var(--muted); }
+  .price-note { font-size: 10px; color: var(--faint); margin-top: 4px; min-height: 14px; }
+
+  .price-divider { border: none; border-top: 1px dashed var(--border); margin: 14px 0; }
+
+  .fit-line { font-size: 11px; font-style: italic; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+
+  .section-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+
+  .feats { list-style: none; flex: 1; margin-bottom: 20px; display: flex; flex-direction: column; gap: 7px; }
+  .feats li { font-size: 12px; color: var(--mid); display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; }
+  .feats li .ck { font-size: 13px; flex-shrink: 0; margin-top: 0; font-weight: 600; }
+  .ck-blue { color: var(--blue); }
+  .ck-purple { color: var(--purple); }
+  .ck-std { color: #aaa; }
+
+  .monthly-only { display: none; }
+
+  .feat-divider { font-size: 10px; font-weight: 600; color: var(--muted); padding: 4px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; letter-spacing: 0.05em; }
+
+  /* CTA */
+  .cta {
+    display: block; text-align: center; font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 600; padding: 12px 16px;
+    border-radius: 12px; text-decoration: none; cursor: pointer;
+    border: none; width: 100%; transition: opacity 0.15s;
+  }
+  .cta:hover { opacity: 0.85; }
+  .cta-std { background: var(--dark); color: white; }
+  .cta-blue { background: var(--blue); color: white; }
+  .cta-purple { background: var(--purple); color: white; }
+  .cta-note { font-size: 10px; color: var(--faint); text-align: center; margin-top: 8px; }
+
+  /* Bottom */
+  .guarantee {
+    background: white; border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 20px; display: flex; gap: 12px; align-items: flex-start;
+    margin-top: 20px;
+  }
+  .guar-icon { font-size: 18px; flex-shrink: 0; color: var(--blue); }
+  .guar-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .guar-text strong { color: var(--dark); }
+
+  .legend {
+    display: flex; gap: 20px; justify-content: center;
+    margin-top: 16px; flex-wrap: wrap;
+  }
+  .legend-item { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .ld-std { background: #ccc; }
+  .ld-blue { background: var(--blue); }
+  .ld-purple { background: var(--purple); }
+
+  footer { text-align: center; font-size: 11px; color: var(--faint); margin-top: 32px; }
+
+  /* Responsive */
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+    body { padding: 32px 16px 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <p class="eyebrow">Done-For-You Systems</p>
+    <h1 class="headline">We build it.<br><em>You collect the revenue.</em></h1>
+    <p class="subhead">Pick your tier. Pay how you want — one-time or ongoing monthly management. Same team, same quality, your call.</p>
+
+    <div class="toggle-outer">
+      <div class="toggle-wrap">
+        <button class="tog active" id="btn-ot" onclick="setMode('onetime')">One-time</button>
+        <button class="tog" id="btn-mo" onclick="setMode('monthly')">Monthly</button>
+      </div>
+      <span class="save-tag" id="save-tag">Save vs. agency rates · 3-mo min</span>
+    </div>
+  </div>
+
+  <div class="spots">
+    <span class="dot"></span>
+    Only 15 client spots available per month — we cap intake to protect quality
+  </div>
+
+  <div class="grid">
+
+    <!-- TIER 1 -->
+    <div class="card">
+      <div class="card-badge badge-gray">Tier 1 · Launchpad</div>
+      <div class="card-body">
+        <p class="tier-label">Full ads system</p>
+        <h2 class="tier-title">Meta ads built &amp; launched for you</h2>
+
+        <div class="pricing-section" id="t1-ot">
+          <p class="pricing-mode-label">One-time · Done for you</p>
+          <p class="price-old">Was $7,000</p>
+          <div class="price-row">
+            <span class="price-num">$3,500</span>
+          </div>
+          <p class="price-note">or 2 × $1,850 · Klarna available · 50% off</p>
+        </div>
+
+        <div class="pricing-section" id="t1-mo" style="display:none;">
+          <p class="pricing-mode-label">Monthly · Ongoing management</p>
+          <p class="price-old">&nbsp;</p>
+          <div class="price-row">
+            <span class="price-num">$2,995</span>
+            <span class="price-per">/mo</span>
+          </div>
+          <p class="price-note">3-month minimum · 30-day cancel notice</p>
+        </div>
+
+        <hr class="price-divider">
+        <p class="fit-line">You have an offer. We build the full ad system and hand it to you running.</p>
+
+        <p class="section-label">What we build</p>
+        <ul class="feats">
+          <li><span class="ck ck-std">✓</span>Cold + warm + retargeting campaigns</li>
+          <li><span class="ck ck-std">✓</span>Facebook &amp; Instagram ads (10+ creatives)</li>
+          <li><span class="ck ck-std">✓</span>Pixel, CAPI &amp; conversion tracking</li>
+          <li><span class="ck ck-std">✓</span>Audience research &amp; targeting strategy</li>
+          <li><span class="ck ck-std">✓</span>Email + SMS follow-up automation</li>
+          <li><span class="ck ck-std">✓</span>CRM &amp; lead pipeline setup</li>
+          <li><span class="ck ck-std">✓</span>Personal walkthrough + launch support</li>
+          <li class="monthly-only"><span class="ck ck-blue">✓</span>Weekly performance reports</li>
+          <li class="monthly-only"><span class="ck ck-blue">✓</span>Monthly strategy call</li>
+          <li class="monthly-only"><span class="ck ck-blue">✓</span>Ongoing A/B testing &amp; optimization</li>
+        </ul>
+
+        <button class="cta cta-std" id="t1-cta">Claim your spot →</button>
+        <p class="cta-note" id="t1-sub">50% off · limited to 15 spots/month</p>
+      </div>
+    </div>
+
+    <!-- TIER 2 -->
+    <div class="card pop">
+      <div class="card-badge badge-blue">Most Popular · Tier 2 · Growth Engine</div>
+      <div class="card-body">
+        <p class="tier-label">Ads + full funnel</p>
+        <h2 class="tier-title">Complete revenue system, built &amp; owned by you</h2>
+
+        <div class="pricing-section" id="t2-ot">
+          <p class="pricing-mode-label">One-time · Done for you</p>
+          <p class="price-old">Was $12,000</p>
+          <div class="price-row">
+            <span class="price-num">$6,000</span>
+          </div>
+          <p class="price-note">or 2 × $3,150 · Klarna available · 50% off</p>
+        </div>
+
+        <div class="pricing-section" id="t2-mo" style="display:none;">
+          <p class="pricing-mode-label">Monthly · Ongoing management</p>
+          <p class="price-old">&nbsp;</p>
+          <div class="price-row">
+            <span class="price-num">$4,995</span>
+            <span class="price-per">/mo</span>
+          </div>
+          <p class="price-note">3-month minimum · 30-day cancel notice</p>
+        </div>
+
+        <hr class="price-divider">
+        <p class="fit-line">No funnel? No problem. We build everything from scratch and hand it back live.</p>
+
+        <p class="section-label">Everything in Tier 1, plus</p>
+        <ul class="feats">
+          <li><span class="ck ck-std">✓</span>Custom high-converting sales funnel</li>
+          <li><span class="ck ck-std">✓</span>All landing, sales &amp; thank-you pages</li>
+          <li><span class="ck ck-std">✓</span>Checkout flow &amp; mobile optimization</li>
+          <li><span class="ck ck-std">✓</span>Full CRM + pipeline + lead scoring</li>
+          <li><span class="ck ck-std">✓</span>Warm audience activation from day one</li>
+          <li><span class="ck ck-std">✓</span>Priority access to our team</li>
+          <li class="monthly-only"><span class="ck ck-blue">✓</span>Monthly funnel conversion review</li>
+          <li class="monthly-only"><span class="ck ck-blue">✓</span>Ongoing funnel &amp; automation updates</li>
+        </ul>
+
+        <button class="cta cta-blue" id="t2-cta">Claim your spot →</button>
+        <p class="cta-note" id="t2-sub">50% off · limited to 15 spots/month</p>
+      </div>
+    </div>
+
+    <!-- TIER 3 -->
+    <div class="card vip">
+      <div class="card-badge badge-purple">Tier 3 · Unfair Advantage</div>
+      <div class="card-body">
+        <p class="tier-label">Full system + AI + strategy</p>
+        <h2 class="tier-title">Everything + AI, ManyChat &amp; 1-on-1 consulting</h2>
+
+        <div class="pricing-section" id="t3-ot">
+          <p class="pricing-mode-label">One-time · Done for you</p>
+          <p class="price-old">Was $20,000</p>
+          <div class="price-row">
+            <span class="price-num">$10,000</span>
+          </div>
+          <p class="price-note">or 2 × $5,250 · Klarna available · 50% off</p>
+        </div>
+
+        <div class="pricing-section" id="t3-mo" style="display:none;">
+          <p class="pricing-mode-label">Monthly · Ongoing management</p>
+          <p class="price-old">&nbsp;</p>
+          <div class="price-row">
+            <span class="price-num">$8,995</span>
+            <span class="price-per">/mo</span>
+          </div>
+          <p class="price-note">3-month minimum · 30-day cancel notice</p>
+        </div>
+
+        <hr class="price-divider">
+        <p class="fit-line">For operators at $20K+/mo ready to scale with a full system and private strategist.</p>
+
+        <p class="section-label">Everything in Tier 2, plus</p>
+        <ul class="feats">
+          <li><span class="ck ck-purple">✓</span>Custom AI agent for your sales process</li>
+          <li><span class="ck ck-purple">✓</span>ManyChat DM → lead → booked call</li>
+          <li><span class="ck ck-purple">✓</span>Private 1-on-1 strategy sessions</li>
+          <li><span class="ck ck-purple">✓</span>Offer &amp; messaging deep-dive</li>
+          <li><span class="ck ck-purple">✓</span>Advanced scaling playbook</li>
+          <li><span class="ck ck-purple">✓</span>First access to new tools &amp; features</li>
+          <li class="monthly-only"><span class="ck ck-purple">✓</span>Priority Slack access to our team</li>
+          <li class="monthly-only"><span class="ck ck-purple">✓</span>Quarterly offer &amp; positioning review</li>
+        </ul>
+
+        <button class="cta cta-purple" id="t3-cta">Claim your spot →</button>
+        <p class="cta-note" id="t3-sub">50% off · limited to 15 spots/month</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot ld-std"></span>Included in both plans</div>
+    <div class="legend-item"><span class="legend-dot ld-blue"></span>Monthly plan add-ons</div>
+    <div class="legend-item"><span class="legend-dot ld-purple"></span>Tier 3 exclusives</div>
+  </div>
+
+  <div class="guarantee">
+    <span class="guar-icon">🛡</span>
+    <p class="guar-text"><strong>Done-right guarantee —</strong> if we don't deliver every asset, campaign, and automation in your package, we keep building until it's right. No excuses, no extra charges. Ad spend is billed separately to your account.</p>
+  </div>
+
+  <footer>Results not typical. Your outcome depends on your offer, effort, and market. </footer>
+
+</div>
+
+<script>
+  var mode = 'onetime';
+
+  function setMode(m) {
+    mode = m;
+    var isMonthly = m === 'monthly';
+
+    document.getElementById('btn-ot').classList.toggle('active', !isMonthly);
+    document.getElementById('btn-mo').classList.toggle('active', isMonthly);
+    document.getElementById('save-tag').classList.toggle('show', isMonthly);
+
+    ['t1','t2','t3'].forEach(function(t) {
+      document.getElementById(t+'-ot').style.display = isMonthly ? 'none' : 'block';
+      document.getElementById(t+'-mo').style.display = isMonthly ? 'block' : 'none';
+    });
+
+    var moFeats = document.querySelectorAll('.monthly-only');
+    moFeats.forEach(function(el) { el.style.display = isMonthly ? 'flex' : 'none'; });
+
+    var ctas = {
+      t1: isMonthly ? 'Enroll in Launchpad →' : 'Claim your spot →',
+      t2: isMonthly ? 'Enroll in Growth Engine →' : 'Claim your spot →',
+      t3: isMonthly ? 'Enroll in Unfair Advantage →' : 'Claim your spot →',
+    };
+    var subs = {
+      t1: isMonthly ? 'Ad spend billed separately' : '50% off · limited to 15 spots/month',
+      t2: isMonthly ? 'Ad spend billed separately' : '50% off · limited to 15 spots/month',
+      t3: isMonthly ? 'Ad spend billed separately' : '50% off · limited to 15 spots/month',
+    };
+    ['t1','t2','t3'].forEach(function(t) {
+      document.getElementById(t+'-cta').textContent = ctas[t];
+      document.getElementById(t+'-sub').textContent = subs[t];
+    });
+  }
+</script>
+</body>
+</html>
